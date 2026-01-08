@@ -17,6 +17,10 @@ def forgot_password_ui():
                 st.warning("⚠️ Please enter your email")
                 return
 
+            if cursor is None:
+                st.error("❌ Database connection not available. Please check your database configuration.")
+                return
+
             sql = "SELECT PASSWORD FROM USERS WHERE EMAIL = %s"
             cursor.execute(sql, (email,))
             row = cursor.fetchone()

@@ -1,7 +1,9 @@
-from Config.database_connection import conn
-from Config.database_connection import cursor
+from Config.database_connection import conn, cursor
 
 def login(email,password):
+    if cursor is None:
+        raise Exception("Database connection not available. Please check your database configuration.")
+    
     sql = "SELECT * FROM users WHERE EMAIL = %s AND PASSWORD = %s"
     value = (email,password)
 
@@ -17,9 +19,12 @@ def login(email,password):
     conn.close()
 
 def signup(name,email,password):
-  sql = "INSERT INTO USERS (NAME,EMAIL,PASSWORD) VALUES (%s, %s, %s)"
-  values = (name,email,password)
+    if cursor is None:
+        raise Exception("Database connection not available. Please check your database configuration.")
+    
+    sql = "INSERT INTO USERS (NAME,EMAIL,PASSWORD) VALUES (%s, %s, %s)"
+    values = (name,email,password)
 
-  cursor.execute(sql, values)
-  conn.commit() 
+    cursor.execute(sql, values)
+    conn.commit() 
 
