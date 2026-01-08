@@ -27,7 +27,7 @@ def main():
     with col3:
         selected_language = st.selectbox("Language", language_options)
 
-    top_left, top_right = st.columns([6 ,1])
+    top_left = st.columns([6 ,1])
     with top_left:
         if st.button("Generate"):
             post = generate_post(
@@ -36,13 +36,6 @@ def main():
                 selected_title
             )
             st.write(post)
-
-    with top_right:
-        if st.button("Logout"):
-            st.session_state.logged_in = False
-            st.session_state.username = ""
-            st.session_state.page = "login"
-            st.rerun()
 
 
 
