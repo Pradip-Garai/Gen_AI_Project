@@ -1,33 +1,49 @@
 import streamlit as st
-from Pages.forgot_password import forgot_password_ui
-from Pages.login import login_ui
-from Pages.signup import signup_ui
-from Pages.main_page import main_page
+import streamlit as st 
+from few_shot import FewShotPosts
+from post_generator import generate_post
 
 
-if "page" not in st.session_state:
-    st.session_state.page = "login"   # login | signup | main
+length_options = ['Short', 'Medium', 'Long']
+language_options = ['English', 'Hinglish']
 
-# ---- SESSION STATE INIT (IMPORTANT) ----
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-
-if "username" not in st.session_state:
-    st.session_state.username = ""
 
 
 def main():
-    if st.session_state.page == "login":
-        login_ui()
+    st.title("LinkedIn Post Generator")
 
-    elif st.session_state.page == "signup":
-        signup_ui()
+    fs = FewShotPosts()
+    col1, col2, col3 = st.columns(3)
 
-    elif st.session_state.logged_in:
-        main_page()
+    with col1:
+        selected_title = st.selectbox(
+            "Title",
+            options=sorted(list(fs.get_tags()))
+        )
 
-    elif st.session_state.page == "forgot_password":
-        forgot_password_ui()
+    with col2:
+        selected_length = st.selectbox("Length", length_options)
+
+    with col3:
+        selected_language = st.selectbox("Language", language_options)
+
+    top_left, top_right = st.columns([6 ,1])
+    with top_left:
+        if st.button("Generate"):
+            post = generate_post(
+                selected_length,
+                selected_language,
+                selected_title
+            )
+            st.write(post)
+
+    with top_right:
+        if st.button("Logout"):
+            st.session_state.logged_in = False
+            st.session_state.username = ""
+            st.session_state.page = "login"
+            st.rerun()
+
 
 
 
