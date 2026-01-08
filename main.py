@@ -1,12 +1,10 @@
 import streamlit as st
-import streamlit as st 
 from few_shot import FewShotPosts
 from post_generator import generate_post
 
 
 length_options = ['Short', 'Medium', 'Long']
 language_options = ['English', 'Hinglish']
-
 
 
 def main():
@@ -27,7 +25,7 @@ def main():
     with col3:
         selected_language = st.selectbox("Language", language_options)
 
-    top_left = st.columns([6 ,1])
+    top_left, top_right = st.columns([6, 1])
     with top_left:
         if st.button("Generate"):
             post = generate_post(
@@ -37,7 +35,9 @@ def main():
             )
             st.write(post)
 
-
+    with top_right:
+        if st.button("Clear"):
+            st.rerun()
 
 
 if __name__ == "__main__":
