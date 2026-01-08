@@ -1,4 +1,4 @@
-from llm_helper import llm
+from llm_helper import get_llm
 from few_shot import FewShotPosts
 
 few_shot = FewShotPosts()
@@ -37,5 +37,6 @@ def generate_post(length,language,topic):
                 break
 
 
+    llm = get_llm()
     response = llm.invoke(PROMPT)
     return response.content
