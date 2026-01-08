@@ -13,16 +13,19 @@ def signup_ui():
 
     with col1:
         if st.button("Sign Up"):
-            if password != confirm_password:
-                st.error("❌ Passwords do not match")
-            elif not email or not password or not name:
+            # Validate form
+            if not name or not email or not password or not confirm_password:
                 st.error("❌ All fields are required")
+            elif password != confirm_password:
+                st.error("❌ Passwords do not match")
             else:
-                #  save user to DB / file
-                signup(name,email,password)
-                st.success("✅ Account created successfully")
-                st.session_state.page = "login"
-                st.rerun()
+                try:
+                    signup(name, email, password)
+                    st.success("✅ Account created successfully")
+                    st.session_state.page = "login"
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"❌ Error creating account: {str(e)}")
 
     with col2:
         if st.button("Back to Login"):
